@@ -17,7 +17,7 @@ public class InvoiceServiceTest {
 
     @Test
     public void whenApplicationStarts_thenHibernateCreatesInitialInvoices() {
-        List<Invoice> invoiceList = invoiceService.listAllInvoices();
+        List<Invoice> invoiceList = invoiceService.getAllInvoices();
 
         Assertions.assertEquals(invoiceList.size(), 3);
     }
