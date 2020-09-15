@@ -26,14 +26,12 @@ public class Contract {
     @OneToMany(mappedBy="billedContract")
     private List<Invoice> billingInvoices;
 
-    @NotNull
     @ManyToOne
     @JoinColumn(name="contractor_id", nullable = false)
     private Contractor creatingContractor;
 
-    @NotNull
     @ManyToOne
-    @JoinColumn(name="vendor_id")
+    @JoinColumn(name="vendor_id", nullable = false)
     private Vendor assignedVendor;
 
     public Long getContractId() {
