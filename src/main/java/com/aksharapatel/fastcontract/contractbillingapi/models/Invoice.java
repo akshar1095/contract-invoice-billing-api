@@ -21,4 +21,35 @@ public class Invoice {
     @Column(name="is_void", columnDefinition = "boolean default true")
     private Boolean isVoid = false;
 
+    public Long getInvoiceId() {
+        return invoiceId;
+    }
+
+    public void setInvoiceId(Long invoiceId) {
+        this.invoiceId = invoiceId;
+    }
+
+    public Double getInvoiceValue() {
+        return invoiceValue;
+    }
+
+    public void setInvoiceValue(Double invoiceValue) {
+        this.invoiceValue = invoiceValue;
+    }
+
+    public Date getCreateDate() {
+        return createDate;
+    }
+
+    public void setCreateDate(Date createDate) {
+        this.createDate = createDate;
+    }
+
+    public Boolean getVoid() {
+        return isVoid;
+    }
+
+    public void setVoid(Boolean aVoid) {
+        isVoid = aVoid;
+    }
 }

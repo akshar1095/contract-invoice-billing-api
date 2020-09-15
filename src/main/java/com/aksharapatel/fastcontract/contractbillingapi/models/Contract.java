@@ -19,4 +19,36 @@ public class Contract {
 
     @Column(name="contract_value")
     private Double contractValue;
+
+    public Long getContractId() {
+        return contractId;
+    }
+
+    public void setContractId(Long contractId) {
+        this.contractId = contractId;
+    }
+
+    public String getContractName() {
+        return contractName;
+    }
+
+    public void setContractName(String contractName) {
+        this.contractName = contractName;
+    }
+
+    public String getContractDescription() {
+        return contractDescription;
+    }
+
+    public void setContractDescription(String contractDescription) {
+        this.contractDescription = contractDescription;
+    }
+
+    public Double getContractValue() {
+        return contractValue;
+    }
+
+    public void setContractValue(Double contractValue) {
+        this.contractValue = contractValue;
+    }
 }
