@@ -1,5 +1,6 @@
 package com.aksharapatel.fastcontract.contractbillingapi.service;
 
+import com.aksharapatel.fastcontract.contractbillingapi.exception.RecordNotFoundException;
 import com.aksharapatel.fastcontract.contractbillingapi.models.Invoice;
 import com.aksharapatel.fastcontract.contractbillingapi.services.InvoiceService;
 import org.junit.jupiter.api.Assertions;
@@ -16,9 +17,26 @@ public class InvoiceServiceTest {
     private InvoiceService invoiceService;
 
     @Test
-    public void whenApplicationStarts_thenHibernateCreatesInitialInvoices() {
+    public void testGetAllInvoices() {
         List<Invoice> invoiceList = invoiceService.getAllInvoices();
 
         Assertions.assertEquals(invoiceList.size(), 3);
+    }
+
+    @Test
+    public void testGetInvoiceByIdFound() throws Exception {
+        Long successInvoiceId = 1L;
+
+        Invoice invoice = invoiceService.getInvoiceById(successInvoiceId);
+        Assertions.assertEquals(invoice.getInvoiceValue(), 10000);
+        Assertions.assertEquals(invoice.getVoid(), false);
+    }
+
+    @Test
+    public void testGetInvoiceByIdNotFound() {
+        Assertions.assertThrows(RecordNotFoundException.class, () -> {
+           Long failInvoiceId = 4L;
+           invoiceService.getInvoiceById(failInvoiceId);
+        });
     }
 }

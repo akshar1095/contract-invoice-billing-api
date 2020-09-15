@@ -18,8 +18,8 @@ public class Invoice {
     @Column(name="create_date", columnDefinition="TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
     private Date createDate;
 
-    @Column(name="is_void", columnDefinition = "boolean default true")
-    private Boolean isVoid = false;
+    @Column(name="is_void", columnDefinition = "boolean default false")
+    private Boolean isVoid;
 
     public Long getInvoiceId() {
         return invoiceId;

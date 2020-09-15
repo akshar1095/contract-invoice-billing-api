@@ -1,5 +1,6 @@
 package com.aksharapatel.fastcontract.contractbillingapi.service;
 
+import com.aksharapatel.fastcontract.contractbillingapi.exception.RecordNotFoundException;
 import com.aksharapatel.fastcontract.contractbillingapi.models.User;
 import com.aksharapatel.fastcontract.contractbillingapi.services.UserService;
 import org.junit.jupiter.api.Assertions;
@@ -16,9 +17,25 @@ public class UserServiceTest {
     private UserService userService;
 
     @Test
-    public void whenApplicationStarts_thenHibernateCreatesInitialUsers() {
+    public void testGetAllUsers() {
         List<User> userList = userService.getAllUsers();
 
         Assertions.assertEquals(userList.size(), 3);
+    }
+
+    @Test
+    public void testGetUserByIdFound() throws Exception {
+        Long successUserId = 1L;
+
+        User user = userService.getUserById(successUserId);
+        Assertions.assertEquals(user.getUserName(), "Test Contractor 1");
+    }
+
+    @Test
+    public void testGetUserByIdNotFound() {
+        Assertions.assertThrows(RecordNotFoundException.class, () -> {
+            Long failUserId = 4L;
+            userService.getUserById(failUserId);
+        });
     }
 }
