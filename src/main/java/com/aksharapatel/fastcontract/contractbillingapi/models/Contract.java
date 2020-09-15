@@ -21,11 +21,11 @@ public class Contract {
     @Column(name="contract_value")
     private Double contractValue;
 
-    @OneToMany(mappedBy="contract")
-    private List<Invoice> billedInvoices;
+    @OneToMany(mappedBy="billedContract")
+    private List<Invoice> billingInvoices;
 
     @ManyToOne
-    @JoinColumn(name="contract_id", nullable = false)
+    @JoinColumn(name="contractor_id", nullable = false)
     private Contractor creatingContractor;
 
     @ManyToOne
@@ -80,7 +80,7 @@ public class Contract {
         this.assignedVendor = assignedVendor;
     }
 
-    public List<Invoice> getBilledInvoices() {
-        return billedInvoices;
+    public List<Invoice> getBillingInvoices() {
+        return billingInvoices;
     }
 }

@@ -9,7 +9,7 @@ import java.util.List;
 @DiscriminatorValue("Contractor")
 public class Contractor extends User {
 
-    @OneToMany(mappedBy="contractor")
+    @OneToMany(mappedBy="creatingContractor")
     private List<Contract> createdContracts;
 
     public List<Contract> getCreatedContracts() {

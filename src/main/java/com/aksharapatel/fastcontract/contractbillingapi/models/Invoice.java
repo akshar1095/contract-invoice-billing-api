@@ -21,6 +21,10 @@ public class Invoice {
     @Column(name="is_void", columnDefinition = "boolean default false")
     private Boolean isVoid;
 
+    @ManyToOne
+    @JoinColumn(name="contract_id", nullable = false)
+    private Contract billedContract;
+
     public Long getInvoiceId() {
         return invoiceId;
     }
@@ -51,5 +55,13 @@ public class Invoice {
 
     public void setVoid(Boolean aVoid) {
         isVoid = aVoid;
+    }
+
+    public Contract getBilledContract() {
+        return billedContract;
+    }
+
+    public void setBilledContract(Contract billedContract) {
+        this.billedContract = billedContract;
     }
 }
