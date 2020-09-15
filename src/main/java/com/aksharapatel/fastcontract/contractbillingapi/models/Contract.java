@@ -1,6 +1,7 @@
 package com.aksharapatel.fastcontract.contractbillingapi.models;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.util.List;
 
 @Entity
@@ -8,6 +9,7 @@ import java.util.List;
 public class Contract {
 
     @Id
+    @NotNull
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name="contract_id", updatable = false, nullable = false)
     private Long contractId;
@@ -24,20 +26,18 @@ public class Contract {
     @OneToMany(mappedBy="billedContract")
     private List<Invoice> billingInvoices;
 
+    @NotNull
     @ManyToOne
     @JoinColumn(name="contractor_id", nullable = false)
     private Contractor creatingContractor;
 
+    @NotNull
     @ManyToOne
-    @JoinColumn(name="vendor_id", nullable = false)
+    @JoinColumn(name="vendor_id")
     private Vendor assignedVendor;
 
     public Long getContractId() {
         return contractId;
-    }
-
-    public void setContractId(Long contractId) {
-        this.contractId = contractId;
     }
 
     public String getContractName() {

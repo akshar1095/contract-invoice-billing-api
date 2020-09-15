@@ -1,9 +1,9 @@
--- INSERT INTO USERS (user_name, user_type) VALUES
---     ('Test Contractor 1', 'Contractor'),
---     ('Test Contractor 2', 'Contractor'),
---     ('Test Contractor 3', 'Contractor'),
---     ('Test Vendor 1', 'Vendor'),
---     ('Test Vendor 2', 'Vendor');
+INSERT INTO USERS (user_name, user_type) VALUES
+    ('Test Contractor 1', 'Contractor'),
+    ('Test Contractor 2', 'Contractor'),
+    ('Test Contractor 3', 'Contractor'),
+    ('Test Vendor 1', 'Vendor'),
+    ('Test Vendor 2', 'Vendor');
 --
 -- INSERT INTO CONTRACTS (contract_name, contract_description, contract_value, contractor_id, vendor_id) VALUES
 --     ('Test Contract 1', 'Test Contract Description 1', 100000, 1, 1),
