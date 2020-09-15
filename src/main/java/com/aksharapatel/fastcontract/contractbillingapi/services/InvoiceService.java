@@ -15,6 +15,8 @@ public class InvoiceService {
     @Autowired
     private InvoiceRepository invoiceRepository;
 
+    public Invoice createInvoice(Invoice invoice) { return invoiceRepository.save(invoice); }
+
     public List<Invoice> getAllInvoices() { return invoiceRepository.findAll(); }
 
     public Invoice getInvoiceById(Long invoiceId) throws RecordNotFoundException {

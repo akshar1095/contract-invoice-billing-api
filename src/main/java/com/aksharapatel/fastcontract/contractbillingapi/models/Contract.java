@@ -24,8 +24,8 @@ public class Contract implements Serializable {
     @Column(name="contract_value")
     private Double contractValue;
 
-    @OneToMany(mappedBy="billedContract")
-    private List<Invoice> billingInvoices;
+    @OneToMany(mappedBy="contract")
+    private List<Invoice> invoices;
 
     @ManyToOne
     @JoinColumn(name="contractor_id", nullable = false)
@@ -81,7 +81,7 @@ public class Contract implements Serializable {
         this.vendor = vendor;
     }
 
-    public List<Invoice> getBillingInvoices() {
-        return billingInvoices;
+    public List<Invoice> getInvoices() {
+        return invoices;
     }
 }

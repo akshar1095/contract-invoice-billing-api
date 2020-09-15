@@ -1,5 +1,7 @@
 package com.aksharapatel.fastcontract.contractbillingapi.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 import java.util.Date;
 
@@ -23,7 +25,8 @@ public class Invoice {
 
     @ManyToOne
     @JoinColumn(name="contract_id", nullable = false)
-    private Contract billedContract;
+    @JsonIgnore
+    private Contract contract;
 
     public Long getInvoiceId() {
         return invoiceId;
@@ -57,11 +60,11 @@ public class Invoice {
         isVoid = aVoid;
     }
 
-    public Contract getBilledContract() {
-        return billedContract;
+    public Contract getContract() {
+        return contract;
     }
 
-    public void setBilledContract(Contract billedContract) {
-        this.billedContract = billedContract;
+    public void setContract(Contract contract) {
+        this.contract = contract;
     }
 }
