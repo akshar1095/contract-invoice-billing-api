@@ -1,6 +1,7 @@
 package com.aksharapatel.fastcontract.contractbillingapi.models;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.util.List;
 
 @Entity
@@ -12,6 +13,7 @@ public class Vendor {
     @Column(name="vendor_id", updatable = false, nullable = false)
     private Long vendorId;
 
+    @NotNull
     @Column(name="vendor_name")
     private String vendorName;
 

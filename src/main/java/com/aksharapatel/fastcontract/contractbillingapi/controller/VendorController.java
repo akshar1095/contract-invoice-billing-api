@@ -6,11 +6,9 @@ import com.aksharapatel.fastcontract.contractbillingapi.services.VendorService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -20,6 +18,13 @@ public class VendorController {
 
     @Autowired
     VendorService vendorService;
+
+    @PostMapping(value = "/vendor", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Vendor> createVendor(@RequestBody Vendor newVendor) {
+        Vendor vendor = vendorService.createVendor(newVendor);
+
+        return new ResponseEntity<>(vendor, new HttpHeaders(), HttpStatus.OK);
+    }
 
     @GetMapping
     public ResponseEntity<List<Vendor>> getAllVendors() {

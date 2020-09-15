@@ -15,6 +15,8 @@ public class VendorService {
     @Autowired
     private VendorRepository vendorRepository;
 
+    public Vendor createVendor(Vendor vendor) { return vendorRepository.save(vendor); }
+
     public List<Vendor> getAllVendors() {
         return vendorRepository.findAll();
     }
