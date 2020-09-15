@@ -1,5 +1,7 @@
 package com.aksharapatel.fastcontract.contractbillingapi.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.util.List;
@@ -18,6 +20,7 @@ public class Vendor {
     private String vendorName;
 
     @OneToMany(mappedBy="assignedVendor")
+    @JsonIgnore
     private List<Contract> assignedContracts;
 
     public Long getVendorId() { return vendorId; }

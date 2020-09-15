@@ -1,8 +1,12 @@
 package com.aksharapatel.fastcontract.contractbillingapi.controller;
 
 import com.aksharapatel.fastcontract.contractbillingapi.exception.RecordNotFoundException;
+import com.aksharapatel.fastcontract.contractbillingapi.models.Contract;
 import com.aksharapatel.fastcontract.contractbillingapi.models.Contractor;
+import com.aksharapatel.fastcontract.contractbillingapi.models.Vendor;
+import com.aksharapatel.fastcontract.contractbillingapi.services.ContractService;
 import com.aksharapatel.fastcontract.contractbillingapi.services.ContractorService;
+import com.aksharapatel.fastcontract.contractbillingapi.services.VendorService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -18,6 +22,12 @@ public class ContractorController {
     
     @Autowired
     ContractorService contractorService;
+
+    @Autowired
+    ContractService contractService;
+
+    @Autowired
+    VendorService vendorService;
 
     @PostMapping(value = "/contractor", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Contractor> createContractor(@RequestBody Contractor newContractor) {
@@ -38,5 +48,21 @@ public class ContractorController {
         List<Contractor> contractorList = contractorService.getAllContractors();
 
         return new ResponseEntity<>(contractorList, new HttpHeaders(), HttpStatus.OK);
+    }
+
+    @PostMapping(value = "/contractor/{contractorId}/{vendorId}/contracts", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Contract> createContract(@PathVariable("contractorId") Long contractorId,
+                                   @PathVariable("vendorId") Long vendorId,
+                                   @RequestBody Contract newContract) throws RecordNotFoundException {
+
+        Contractor creatingContractor = contractorService.getContractorById(contractorId);
+        Vendor assignedVendor = vendorService.getVendorById(vendorId);
+
+        newContract.setCreatingContractor(creatingContractor);
+        newContract.setAssignedVendor(assignedVendor);
+
+        Contract contract = contractService.createContract(newContract);
+
+        return new ResponseEntity<>(contract, new HttpHeaders(), HttpStatus.OK);
     }
 }

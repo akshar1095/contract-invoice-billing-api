@@ -5,4 +5,4 @@ INSERT INTO CONTRACTORS (contractor_name) VALUES
 
 INSERT INTO VENDORS (vendor_name) VALUES
     ('Test Vendor 1'),
-    ('Test Vendor 1');
+    ('Test Vendor 2');

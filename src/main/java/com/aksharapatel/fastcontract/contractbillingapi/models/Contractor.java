@@ -1,5 +1,8 @@
 package com.aksharapatel.fastcontract.contractbillingapi.models;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.util.List;
@@ -18,6 +21,7 @@ public class Contractor {
     private String contractorName;
 
     @OneToMany(mappedBy="creatingContractor")
+    @JsonIgnore
     private List<Contract> createdContracts;
 
     public Long getContractorId() { return contractorId; }

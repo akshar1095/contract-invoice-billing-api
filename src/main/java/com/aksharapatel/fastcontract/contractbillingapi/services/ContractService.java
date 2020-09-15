@@ -15,6 +15,8 @@ public class ContractService {
     @Autowired
     private ContractRepository contractRepository;
 
+    public Contract createContract(Contract contract) { return contractRepository.save(contract); }
+
     public List<Contract> getAllContracts() { return contractRepository.findAll(); }
 
     public Contract getContractById(Long contractId) throws RecordNotFoundException {
