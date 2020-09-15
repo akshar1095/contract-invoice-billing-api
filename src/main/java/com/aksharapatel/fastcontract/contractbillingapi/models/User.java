@@ -4,6 +4,8 @@ import javax.persistence.*;
 
 @Entity
 @Table(name="USERS")
+@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
+@DiscriminatorColumn(name = "user_type", discriminatorType = DiscriminatorType.STRING)
 public class User {
 
     @Id
@@ -29,4 +31,5 @@ public class User {
     public void setUserName(String userName) {
         this.userName = userName;
     }
+
 }
