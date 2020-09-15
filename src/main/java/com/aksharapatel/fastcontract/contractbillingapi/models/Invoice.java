@@ -1,6 +1,7 @@
 package com.aksharapatel.fastcontract.contractbillingapi.models;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
 import java.util.Date;
@@ -17,16 +18,18 @@ public class Invoice {
     @Column(name="invoice_value")
     private Double invoiceValue;
 
-    @Column(name="create_date", columnDefinition="TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
+    @Column(name="create_date")
     private Date createDate;
 
-    @Column(name="is_void", columnDefinition = "boolean default false")
-    private Boolean isVoid;
+    @Column(name="invoice_Void")
+    private Boolean invoiceVoid;
 
     @ManyToOne
     @JoinColumn(name="contract_id", nullable = false)
     @JsonIgnore
     private Contract contract;
+
+    public Invoice() {}
 
     public Long getInvoiceId() {
         return invoiceId;
@@ -52,12 +55,12 @@ public class Invoice {
         this.createDate = createDate;
     }
 
-    public Boolean getVoid() {
-        return isVoid;
+    public Boolean getInvoiceVoid() {
+        return invoiceVoid;
     }
 
-    public void setVoid(Boolean aVoid) {
-        isVoid = aVoid;
+    public void setInvoiceVoid(Boolean aVoid) {
+        invoiceVoid = aVoid;
     }
 
     public Contract getContract() {

@@ -17,12 +17,19 @@ public class InvoiceService {
 
     public Invoice createInvoice(Invoice invoice) { return invoiceRepository.save(invoice); }
 
+    public Invoice setInvoiceIsVoid(Long invoiceId,Invoice updatedInvoice) throws RecordNotFoundException {
+        return invoiceRepository.findById(invoiceId).map(invoice -> {
+            invoice.setInvoiceVoid(updatedInvoice.getInvoiceVoid());
+            return invoiceRepository.save(invoice);
+        }).orElseThrow(() -> new RecordNotFoundException("Invoice with given " + invoiceId + " not found"));
+    }
+
     public List<Invoice> getAllInvoices() { return invoiceRepository.findAll(); }
 
     public Invoice getInvoiceById(Long invoiceId) throws RecordNotFoundException {
 
         Optional<Invoice> invoice = invoiceRepository.findById(invoiceId);
 
-        return invoice.orElseThrow(() -> new RecordNotFoundException("No invoice record exists for the given invoice id"));
+        return invoice.orElseThrow(() -> new RecordNotFoundException("Invoice with given " + invoiceId + " not found"));
     }
 }

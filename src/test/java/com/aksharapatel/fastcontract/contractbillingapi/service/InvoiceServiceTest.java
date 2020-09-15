@@ -32,7 +32,7 @@ public class InvoiceServiceTest {
 
         Invoice invoice = invoiceService.getInvoiceById(successInvoiceId);
         Assertions.assertEquals(invoice.getInvoiceValue(), 10000);
-        Assertions.assertEquals(invoice.getVoid(), false);
+        Assertions.assertEquals(invoice.getInvoiceVoid(), false);
     }
 
     @Test
