@@ -34,7 +34,7 @@ public class UserService {
         if(user.isPresent()) {
             return user.get();
         } else {
-            throw new RecordNotFoundException("No user record exists for the given id");
+            throw new RecordNotFoundException("No user record exists for the given user id");
         }
     }
 }

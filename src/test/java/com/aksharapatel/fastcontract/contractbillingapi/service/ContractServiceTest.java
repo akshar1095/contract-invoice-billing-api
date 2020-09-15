@@ -17,7 +17,7 @@ public class ContractServiceTest {
 
     @Test
     public void whenApplicationStarts_thenHibernateCreatesInitialContracts() {
-        List<Contract> contractList = contractService.listAllContracts();
+        List<Contract> contractList = contractService.getAllContracts();
 
         Assertions.assertEquals(contractList.size(), 3);
     }

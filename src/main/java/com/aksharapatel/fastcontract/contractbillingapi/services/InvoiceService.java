@@ -34,7 +34,7 @@ public class InvoiceService {
         if(invoice.isPresent()) {
             return invoice.get();
         } else {
-            throw new RecordNotFoundException("No invoice record exists for the given id");
+            throw new RecordNotFoundException("No invoice record exists for the given invoice id");
         }
     }
 }
