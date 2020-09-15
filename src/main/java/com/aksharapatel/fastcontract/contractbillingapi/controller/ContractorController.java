@@ -36,8 +36,8 @@ public class ContractorController {
         return new ResponseEntity<>(contractor, new HttpHeaders(), HttpStatus.OK);
     }
 
-    @GetMapping(value = "/contractor/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Contractor> getContractorById(@PathVariable("id") Long contractorId) throws RecordNotFoundException {
+    @GetMapping(value = "/contractor/{contractorId}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Contractor> getContractorById(@PathVariable("contractorId") Long contractorId) throws RecordNotFoundException {
         Contractor contractor = contractorService.getContractorById(contractorId);
 
         return new ResponseEntity<>(contractor, new HttpHeaders(), HttpStatus.OK);
@@ -58,11 +58,20 @@ public class ContractorController {
         Contractor creatingContractor = contractorService.getContractorById(contractorId);
         Vendor assignedVendor = vendorService.getVendorById(vendorId);
 
-        newContract.setCreatingContractor(creatingContractor);
-        newContract.setAssignedVendor(assignedVendor);
+        newContract.setContractor(creatingContractor);
+        newContract.setVendor(assignedVendor);
 
         Contract contract = contractService.createContract(newContract);
 
         return new ResponseEntity<>(contract, new HttpHeaders(), HttpStatus.OK);
+    }
+
+    @GetMapping(value = "/contractor/{contractorId}/contracts", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<List<Contract>> getAllContractsByContractorId(@PathVariable("contractorId") Long contractorId) throws RecordNotFoundException {
+        Contractor contractsContractor = contractorService.getContractorById(contractorId);
+
+        List<Contract> contractList = contractService.getAllContractsByContractorId(contractsContractor);
+
+        return new ResponseEntity<>(contractList, new HttpHeaders(), HttpStatus.OK);
     }
 }

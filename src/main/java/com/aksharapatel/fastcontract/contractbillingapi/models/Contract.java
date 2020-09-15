@@ -1,15 +1,14 @@
 package com.aksharapatel.fastcontract.contractbillingapi.models;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotNull;
+import java.io.Serializable;
 import java.util.List;
 
 @Entity
 @Table(name="CONTRACTS")
-public class Contract {
+public class Contract implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -30,11 +29,13 @@ public class Contract {
 
     @ManyToOne
     @JoinColumn(name="contractor_id", nullable = false)
-    private Contractor creatingContractor;
+    @JsonIgnore
+    private Contractor contractor;
 
     @ManyToOne
     @JoinColumn(name="vendor_id", nullable = false)
-    private Vendor assignedVendor;
+    @JsonIgnore
+    private Vendor vendor;
 
     public Long getContractId() {
         return contractId;
@@ -64,20 +65,20 @@ public class Contract {
         this.contractValue = contractValue;
     }
 
-    public Contractor getCreatingContractor() {
-        return creatingContractor;
+    public Contractor getContractor() {
+        return contractor;
     }
 
-    public void setCreatingContractor(Contractor creatingContractor) {
-        this.creatingContractor = creatingContractor;
+    public void setContractor(Contractor contractor) {
+        this.contractor = contractor;
     }
 
-    public Vendor getAssignedVendor() {
-        return assignedVendor;
+    public Vendor getVendor() {
+        return vendor;
     }
 
-    public void setAssignedVendor(Vendor assignedVendor) {
-        this.assignedVendor = assignedVendor;
+    public void setVendor(Vendor vendor) {
+        this.vendor = vendor;
     }
 
     public List<Invoice> getBillingInvoices() {
