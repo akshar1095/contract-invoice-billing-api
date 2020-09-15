@@ -1,8 +1,8 @@
 package com.aksharapatel.fastcontract.contractbillingapi.controller;
 
 import com.aksharapatel.fastcontract.contractbillingapi.exception.RecordNotFoundException;
-import com.aksharapatel.fastcontract.contractbillingapi.models.User;
-import com.aksharapatel.fastcontract.contractbillingapi.services.UserService;
+import com.aksharapatel.fastcontract.contractbillingapi.models.Vendor;
+import com.aksharapatel.fastcontract.contractbillingapi.services.VendorService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -15,23 +15,23 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 @RestController
-@RequestMapping("/users")
-public class UserController {
+@RequestMapping("/vendors")
+public class VendorController {
 
     @Autowired
-    UserService userService;
+    VendorService vendorService;
 
     @GetMapping
-    public ResponseEntity<List<User>> getAllUsers() {
-        List<User> userList = userService.getAllUsers();
+    public ResponseEntity<List<Vendor>> getAllVendors() {
+        List<Vendor> vendorList = vendorService.getAllVendors();
 
-        return new ResponseEntity<>(userList, new HttpHeaders(), HttpStatus.OK);
+        return new ResponseEntity<>(vendorList, new HttpHeaders(), HttpStatus.OK);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<User> getUserById(@PathVariable("id") Long userId) throws RecordNotFoundException {
-        User user = userService.getUserById(userId);
+    public ResponseEntity<Vendor> getVendorById(@PathVariable("id") Long vendorId) throws RecordNotFoundException {
+        Vendor vendor = vendorService.getVendorById(vendorId);
 
-        return new ResponseEntity<>(user, new HttpHeaders(), HttpStatus.OK);
+        return new ResponseEntity<>(vendor, new HttpHeaders(), HttpStatus.OK);
     }
 }

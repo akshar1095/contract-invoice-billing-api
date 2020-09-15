@@ -1,16 +1,26 @@
 package com.aksharapatel.fastcontract.contractbillingapi.models;
 
-import javax.persistence.DiscriminatorValue;
-import javax.persistence.Entity;
-import javax.persistence.OneToMany;
+import javax.persistence.*;
 import java.util.List;
 
 @Entity
-@DiscriminatorValue("Contractor")
-public class Contractor extends User {
+@Table(name="CONTRACTORS")
+public class Contractor {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name="contractor_id", updatable = false, nullable = false)
+    private Long contractorId;
+
+    @Column(name="contractor_name")
+    private String contractorName;
 
     @OneToMany(mappedBy="creatingContractor")
     private List<Contract> createdContracts;
+
+    public Long getContractorId() { return contractorId; }
+
+    public String getContractorName() { return contractorName; }
 
     public List<Contract> getCreatedContracts() {
         return createdContracts;
