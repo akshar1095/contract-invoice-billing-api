@@ -6,7 +6,6 @@ import com.aksharapatel.fastcontract.contractbillingapi.repositories.ContractRep
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -16,25 +15,12 @@ public class ContractService {
     @Autowired
     private ContractRepository contractRepository;
 
-    public List<Contract> getAllContracts() {
-
-        List<Contract> contractList = contractRepository.findAll();
-
-        if(contractList.size() > 0) {
-            return contractList;
-        } else {
-            return new ArrayList<>();
-        }
-    }
+    public List<Contract> getAllContracts() { return contractRepository.findAll(); }
 
     public Contract getContractById(Long contractId) throws RecordNotFoundException {
 
         Optional<Contract> contract = contractRepository.findById(contractId);
 
-        if(contract.isPresent()) {
-            return contract.get();
-        } else {
-            throw new RecordNotFoundException("No contract record exists for the given contract id");
-        }
+        return contract.orElseThrow(() -> new RecordNotFoundException("No contract record exists for the given contract id"));
     }
 }
