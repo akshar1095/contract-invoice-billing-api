@@ -26,17 +26,17 @@ public class VendorController {
         return new ResponseEntity<>(vendor, new HttpHeaders(), HttpStatus.OK);
     }
 
-    @GetMapping
-    public ResponseEntity<List<Vendor>> getAllVendors() {
-        List<Vendor> vendorList = vendorService.getAllVendors();
-
-        return new ResponseEntity<>(vendorList, new HttpHeaders(), HttpStatus.OK);
-    }
-
-    @GetMapping("/{id}")
+    @GetMapping(value = "/vendor/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Vendor> getVendorById(@PathVariable("id") Long vendorId) throws RecordNotFoundException {
         Vendor vendor = vendorService.getVendorById(vendorId);
 
         return new ResponseEntity<>(vendor, new HttpHeaders(), HttpStatus.OK);
+    }
+
+    @GetMapping(value = "/list", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<List<Vendor>> getAllVendors() {
+        List<Vendor> vendorList = vendorService.getAllVendors();
+
+        return new ResponseEntity<>(vendorList, new HttpHeaders(), HttpStatus.OK);
     }
 }

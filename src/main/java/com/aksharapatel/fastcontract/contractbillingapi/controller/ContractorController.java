@@ -33,7 +33,7 @@ public class ContractorController {
         return new ResponseEntity<>(contractor, new HttpHeaders(), HttpStatus.OK);
     }
 
-    @GetMapping
+    @GetMapping(value = "/list", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<List<Contractor>> getAllContractors() {
         List<Contractor> contractorList = contractorService.getAllContractors();
 
