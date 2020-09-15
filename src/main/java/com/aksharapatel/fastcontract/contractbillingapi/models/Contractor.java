@@ -1,6 +1,7 @@
 package com.aksharapatel.fastcontract.contractbillingapi.models;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.util.List;
 
 @Entity
@@ -12,6 +13,7 @@ public class Contractor {
     @Column(name="contractor_id", updatable = false, nullable = false)
     private Long contractorId;
 
+    @NotNull
     @Column(name="contractor_name")
     private String contractorName;
 

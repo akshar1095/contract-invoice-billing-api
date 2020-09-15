@@ -15,6 +15,10 @@ public class ContractorService {
     @Autowired
     private ContractorRepository contractorRepository;
 
+    public Contractor createContractor(Contractor contractor) {
+        return contractorRepository.save(contractor);
+    }
+
     public List<Contractor> getAllContractors() {
         return contractorRepository.findAll();
     }
