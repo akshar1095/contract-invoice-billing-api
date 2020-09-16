@@ -2,13 +2,18 @@ package com.aksharapatel.fastcontract.contractbillingapi.models;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.hibernate.annotations.Type;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.Date;
 
 @Entity
 @Table(name="INVOICES")
-public class Invoice {
+@EntityListeners(AuditingEntityListener.class)
+public class Invoice implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -18,8 +23,15 @@ public class Invoice {
     @Column(name="invoice_value")
     private Double invoiceValue;
 
-    @Column(name="create_date")
+    @Temporal(TemporalType.TIMESTAMP)
+    @Column(name="create_date", nullable = false, updatable = false)
+    @CreatedDate
     private Date createDate;
+
+    @Temporal(TemporalType.TIMESTAMP)
+    @Column(name = "updated_date", nullable = false)
+    @LastModifiedDate
+    private Date updateDate;
 
     @Column(name="invoice_Void")
     private Boolean invoiceVoid;
@@ -54,6 +66,10 @@ public class Invoice {
     public void setCreateDate(Date createDate) {
         this.createDate = createDate;
     }
+
+    public Date getUpdateDate() { return updateDate; }
+
+    public void setUpdateDate(Date updateDate) { this.updateDate = updateDate; }
 
     public Boolean getInvoiceVoid() {
         return invoiceVoid;

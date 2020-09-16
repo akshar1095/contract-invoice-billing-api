@@ -3,6 +3,7 @@ package com.aksharapatel.fastcontract.contractbillingapi.services;
 import com.aksharapatel.fastcontract.contractbillingapi.exception.RecordNotFoundException;
 import com.aksharapatel.fastcontract.contractbillingapi.models.Contract;
 import com.aksharapatel.fastcontract.contractbillingapi.models.Contractor;
+import com.aksharapatel.fastcontract.contractbillingapi.models.Invoice;
 import com.aksharapatel.fastcontract.contractbillingapi.models.Vendor;
 import com.aksharapatel.fastcontract.contractbillingapi.repositories.ContractRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,6 +11,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class ContractService {
@@ -26,7 +28,6 @@ public class ContractService {
     public List<Contract> getAllContractsByVendorId(Vendor vendor) { return contractRepository.findByVendor(vendor); }
 
     public Contract getContractById(Long contractId) throws RecordNotFoundException {
-
         Optional<Contract> contract = contractRepository.findById(contractId);
 
         return contract.orElseThrow(() -> new RecordNotFoundException("No contract record exists for the given contract id"));

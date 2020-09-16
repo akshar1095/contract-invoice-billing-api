@@ -1,6 +1,7 @@
 package com.aksharapatel.fastcontract.contractbillingapi.services;
 
 import com.aksharapatel.fastcontract.contractbillingapi.exception.RecordNotFoundException;
+import com.aksharapatel.fastcontract.contractbillingapi.models.Contract;
 import com.aksharapatel.fastcontract.contractbillingapi.models.Invoice;
 import com.aksharapatel.fastcontract.contractbillingapi.repositories.InvoiceRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class InvoiceService {
