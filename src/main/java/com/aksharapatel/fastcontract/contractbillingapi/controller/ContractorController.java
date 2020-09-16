@@ -52,7 +52,7 @@ public class ContractorController {
     public ResponseEntity<List<Contract>> getAllContractsByContractorId(@PathVariable("contractorId") Long contractorId) throws RecordNotFoundException {
         Contractor contractor = contractorService.getContractorById(contractorId);
         logger.info("Successfully Retrieved Contractor: {}", contractor);
-        List<Contract> contractList = contractService.getAllContractsByContractorId(contractor);
+        List<Contract> contractList = contractService.getAllContractsByContractor(contractor);
         logger.info("Successfully Retrieved Contracts List: {}", contractList);
         return new ResponseEntity<>(contractList, new HttpHeaders(), HttpStatus.OK);
     }

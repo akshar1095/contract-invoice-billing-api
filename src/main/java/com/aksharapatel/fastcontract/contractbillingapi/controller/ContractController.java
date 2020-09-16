@@ -3,9 +3,15 @@ package com.aksharapatel.fastcontract.contractbillingapi.controller;
 import com.aksharapatel.fastcontract.contractbillingapi.exception.RecordNotFoundException;
 import com.aksharapatel.fastcontract.contractbillingapi.exception.ValueExceedsLimitException;
 import com.aksharapatel.fastcontract.contractbillingapi.models.Contract;
+import com.aksharapatel.fastcontract.contractbillingapi.models.Contractor;
 import com.aksharapatel.fastcontract.contractbillingapi.models.Invoice;
+import com.aksharapatel.fastcontract.contractbillingapi.models.Vendor;
 import com.aksharapatel.fastcontract.contractbillingapi.services.ContractService;
+import com.aksharapatel.fastcontract.contractbillingapi.services.ContractorService;
 import com.aksharapatel.fastcontract.contractbillingapi.services.InvoiceService;
+import com.aksharapatel.fastcontract.contractbillingapi.services.VendorService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -13,12 +19,10 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import javax.print.attribute.standard.Media;
 import java.util.List;
 import java.util.stream.Collectors;
 
 @RestController
-@RequestMapping("/contracts")
 public class ContractController {
 
     @Autowired
@@ -27,55 +31,56 @@ public class ContractController {
     @Autowired
     InvoiceService invoiceService;
 
-    @GetMapping
+    @Autowired
+    ContractorService contractorService;
+
+    @Autowired
+    VendorService vendorService;
+
+    Logger logger = LoggerFactory.getLogger(ContractorController.class);
+
+    @GetMapping(value = "/contracts")
     public ResponseEntity<List<Contract>> getAllContracts() {
         List<Contract> contractList = contractService.getAllContracts();
-
+        logger.info("Successfully Retrieved Contracts List: {}", contractList);
         return new ResponseEntity<>(contractList, new HttpHeaders(), HttpStatus.OK);
     }
 
-    @GetMapping("/contract/{id}")
-    public ResponseEntity<Contract> getContractById(@PathVariable("id") Long contractId) throws RecordNotFoundException {
+    @GetMapping("/contracts/{contractId}")
+    public ResponseEntity<Contract> getContractById(@PathVariable("contractId") Long contractId) throws RecordNotFoundException {
         Contract contract = contractService.getContractById(contractId);
-
+        logger.info("Successfully Retrieved Contract: {}", contract);
         return new ResponseEntity<>(contract, new HttpHeaders(), HttpStatus.OK);
     }
 
-    @GetMapping(value = "/contract/{contractId}/invoices/list", produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(value = "/contracts/{contractId}/invoices", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<List<Invoice>> getAllNonVoidInvoicesByContractId(@PathVariable("contractId") Long contractId) throws RecordNotFoundException {
-        Contract invoicesContract = contractService.getContractById(contractId);
-
-        List<Invoice> invoiceList = invoicesContract.getInvoices().stream().filter(invoice -> !invoice.getInvoiceVoid()).collect(Collectors.toList());
-
+        Contract contract = contractService.getContractById(contractId);
+        logger.info("Successfully Retrieved Contract: {}", contract);
+        List<Invoice> invoiceList = invoiceService.getAllNonVoidInvoicesByContract(contract);
+        logger.info("Successfully Retrieved Invoice List: {}", invoiceList);
         return new ResponseEntity<>(invoiceList, new HttpHeaders(), HttpStatus.OK);
     }
 
-    @GetMapping(value = "/contract/{contractId}/remaining")
+    @GetMapping(value = "/contracts/{contractId}/remaining")
     public ResponseEntity<Double> getValueRemainingByContractId(@PathVariable("contractId") Long contractId) throws RecordNotFoundException {
-        Contract invoicesContract = contractService.getContractById(contractId);
-
-        Double remainingValue = invoicesContract.getContractValue() - invoicesContract.getInvoices().stream().filter(invoice -> !invoice.getInvoiceVoid()).collect(Collectors.toList())
-                .stream().mapToDouble(Invoice::getInvoiceValue).sum();
-
+        Double remainingValue = contractService.getValueRemainingByContractId(contractId);
+        logger.info("Successfully Remaining Value: {}", remainingValue);
         return new ResponseEntity<>(remainingValue, new HttpHeaders(), HttpStatus.OK);
     }
 
-    @PostMapping(value = "/contract/{contractId}/invoices", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Invoice> createInvoice(@PathVariable("contractId") Long contractId,
-                                                 @RequestBody Invoice newInvoice) throws RecordNotFoundException, ValueExceedsLimitException {
-        Contract contract = contractService.getContractById(contractId);
-
-        Double remainingValue = contract.getContractValue() - contract.getInvoices().stream().filter(invoice -> !invoice.getInvoiceVoid()).collect(Collectors.toList())
-                .stream().mapToDouble(Invoice::getInvoiceValue).sum();
-
-        if(newInvoice.getInvoiceValue() > remainingValue) {
-            throw new ValueExceedsLimitException("Invoice Value: " + newInvoice.getInvoiceValue() + " Exceeds Value Remaining on Contract: " + remainingValue);
-        } else {
-            newInvoice.setContract(contract);
-
-            Invoice invoice = invoiceService.createInvoice(newInvoice);
-
-            return new ResponseEntity<>(invoice, new HttpHeaders(), HttpStatus.OK);
-        }
+    @PostMapping(value = "/contractors/{contractorId}/{vendorId}/contracts", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Contract> createContract(@PathVariable("contractorId") Long contractorId,
+                                   @PathVariable("vendorId") Long vendorId,
+                                   @RequestBody Contract newContract) throws RecordNotFoundException {
+        Contractor contractor = contractorService.getContractorById(contractorId);
+        logger.info("Successfully Retrieved Contractor: {}", contractor);
+        Vendor vendor = vendorService.getVendorById(vendorId);
+        logger.info("Successfully Retrieved Vendor: {}", vendor);
+        newContract.setContractor(contractor);
+        newContract.setVendor(vendor);
+        Contract contract = contractService.createContract(newContract);
+        logger.info("Successfully Created New Contract: {}", contract);
+        return new ResponseEntity<>(contract, new HttpHeaders(), HttpStatus.OK);
     }
 }

@@ -23,7 +23,7 @@ public class ContractService {
 
     public List<Contract> getAllContracts() { return contractRepository.findAll(); }
 
-    public List<Contract> getAllContractsByContractorId(Contractor contractor) { return contractRepository.findByContractor(contractor); }
+    public List<Contract> getAllContractsByContractor(Contractor contractor) { return contractRepository.findByContractor(contractor); }
 
     public List<Contract> getAllContractsByVendorId(Vendor vendor) { return contractRepository.findByVendor(vendor); }
 
@@ -31,5 +31,15 @@ public class ContractService {
         Optional<Contract> contract = contractRepository.findById(contractId);
 
         return contract.orElseThrow(() -> new RecordNotFoundException("No contract record exists for the given contract id"));
+    }
+
+    public Double getValueRemainingByContractId(Long contractId) throws RecordNotFoundException {
+        Optional<Contract> contract = contractRepository.findById(contractId);
+        if(contract.isPresent()) {
+            return contract.get().getContractValue() - contract.get().getInvoices().stream().filter(invoice -> !invoice.getInvoiceVoid()).collect(Collectors.toList())
+                    .stream().mapToDouble(Invoice::getInvoiceValue).sum();
+        } else {
+            throw new RecordNotFoundException("No contract record exists for the given contract id");
+        }
     }
 }
