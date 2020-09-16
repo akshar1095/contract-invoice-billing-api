@@ -10,14 +10,17 @@ public class Contractor {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name="contractor_id", nullable = false, updatable = false)
     private Long contractorId;
 
     @NotNull
-    @Column(name="contractor_name")
+    @Column(name="contractor_name", nullable = false)
     private String contractorName;
 
-    @OneToMany(mappedBy="contractor", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy="contractor")
     private List<Contract> contracts;
+
+    public Contractor() {}
 
     public Long getContractorId() { return contractorId; }
 
@@ -26,4 +29,8 @@ public class Contractor {
     public List<Contract> getContracts() {
         return contracts;
     }
+
+    public void setContractorName(String contractorName) { this.contractorName = contractorName; }
+
+    public void setContracts(List<Contract> contracts) { this.contracts = contracts; }
 }

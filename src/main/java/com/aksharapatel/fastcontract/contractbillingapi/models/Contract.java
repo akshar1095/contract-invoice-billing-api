@@ -3,6 +3,7 @@ package com.aksharapatel.fastcontract.contractbillingapi.models;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.util.List;
 
@@ -15,13 +16,15 @@ public class Contract implements Serializable {
     @Column(name="contract_id", updatable = false, nullable = false)
     private Long contractId;
 
-    @Column(name="contract_name")
+    @NotNull
+    @Column(name="contract_name", nullable = false)
     private String contractName;
 
     @Column(name="contract_description")
     private String contractDescription;
 
-    @Column(name="contract_value")
+    @NotNull
+    @Column(name="contract_value", nullable = false)
     private Double contractValue;
 
     @OneToMany(mappedBy="contract")
@@ -37,51 +40,31 @@ public class Contract implements Serializable {
     @JsonIgnore
     private Vendor vendor;
 
-    public Long getContractId() {
-        return contractId;
-    }
+    public Contract() {}
 
-    public String getContractName() {
-        return contractName;
-    }
+    public Long getContractId() { return contractId; }
 
-    public void setContractName(String contractName) {
-        this.contractName = contractName;
-    }
+    public String getContractName() { return contractName; }
 
-    public String getContractDescription() {
-        return contractDescription;
-    }
+    public String getContractDescription() { return contractDescription; }
 
-    public void setContractDescription(String contractDescription) {
-        this.contractDescription = contractDescription;
-    }
+    public Double getContractValue() { return contractValue; }
 
-    public Double getContractValue() {
-        return contractValue;
-    }
+    public List<Invoice> getInvoices() { return invoices; }
 
-    public void setContractValue(Double contractValue) {
-        this.contractValue = contractValue;
-    }
+    public Contractor getContractor() { return contractor; }
 
-    public Contractor getContractor() {
-        return contractor;
-    }
+    public Vendor getVendor() { return vendor; }
 
-    public void setContractor(Contractor contractor) {
-        this.contractor = contractor;
-    }
+    public void setContractName(String contractName) { this.contractName = contractName; }
 
-    public Vendor getVendor() {
-        return vendor;
-    }
+    public void setContractDescription(String contractDescription) { this.contractDescription = contractDescription; }
 
-    public void setVendor(Vendor vendor) {
-        this.vendor = vendor;
-    }
+    public void setContractValue(Double contractValue) { this.contractValue = contractValue; }
 
-    public List<Invoice> getInvoices() {
-        return invoices;
-    }
+    public void setInvoices(List<Invoice> invoices) { this.invoices = invoices; }
+
+    public void setContractor(Contractor contractor) { this.contractor = contractor; }
+
+    public void setVendor(Vendor vendor) { this.vendor = vendor; }
 }

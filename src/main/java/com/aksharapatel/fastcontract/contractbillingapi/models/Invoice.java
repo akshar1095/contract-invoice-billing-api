@@ -1,12 +1,12 @@
 package com.aksharapatel.fastcontract.contractbillingapi.models;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import org.hibernate.annotations.Type;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.util.Date;
 
@@ -17,11 +17,8 @@ public class Invoice implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name="invoice_id", updatable = false, nullable = false)
+    @Column(name="invoice_id", nullable = false, updatable = false)
     private Long invoiceId;
-
-    @Column(name="invoice_value")
-    private Double invoiceValue;
 
     @Temporal(TemporalType.TIMESTAMP)
     @Column(name="create_date", nullable = false, updatable = false)
@@ -29,11 +26,16 @@ public class Invoice implements Serializable {
     private Date createDate;
 
     @Temporal(TemporalType.TIMESTAMP)
-    @Column(name = "updated_date", nullable = false)
+    @Column(name = "updated_date", nullable = false, updatable = false)
     @LastModifiedDate
     private Date updateDate;
 
-    @Column(name="invoice_Void")
+    @NotNull
+    @Column(name="invoice_value", nullable = false)
+    private Double invoiceValue;
+
+    @NotNull
+    @Column(name="invoice_Void", nullable = false)
     private Boolean invoiceVoid;
 
     @ManyToOne
@@ -43,47 +45,21 @@ public class Invoice implements Serializable {
 
     public Invoice() {}
 
-    public Long getInvoiceId() {
-        return invoiceId;
-    }
+    public Long getInvoiceId() { return invoiceId; }
 
-    public void setInvoiceId(Long invoiceId) {
-        this.invoiceId = invoiceId;
-    }
+    public Double getInvoiceValue() { return invoiceValue; }
 
-    public Double getInvoiceValue() {
-        return invoiceValue;
-    }
-
-    public void setInvoiceValue(Double invoiceValue) {
-        this.invoiceValue = invoiceValue;
-    }
-
-    public Date getCreateDate() {
-        return createDate;
-    }
-
-    public void setCreateDate(Date createDate) {
-        this.createDate = createDate;
-    }
+    public Date getCreateDate() { return createDate; }
 
     public Date getUpdateDate() { return updateDate; }
 
-    public void setUpdateDate(Date updateDate) { this.updateDate = updateDate; }
+    public Boolean getInvoiceVoid() { return invoiceVoid; }
 
-    public Boolean getInvoiceVoid() {
-        return invoiceVoid;
-    }
+    public Contract getContract() { return contract; }
 
-    public void setInvoiceVoid(Boolean aVoid) {
-        invoiceVoid = aVoid;
-    }
+    public void setInvoiceValue(Double invoiceValue) { this.invoiceValue = invoiceValue; }
 
-    public Contract getContract() {
-        return contract;
-    }
+    public void setInvoiceVoid(Boolean invoiceVoid) { this.invoiceVoid = invoiceVoid; }
 
-    public void setContract(Contract contract) {
-        this.contract = contract;
-    }
+    public void setContract(Contract contract) { this.contract = contract; }
 }
