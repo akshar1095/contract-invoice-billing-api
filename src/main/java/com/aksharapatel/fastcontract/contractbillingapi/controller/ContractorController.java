@@ -53,7 +53,7 @@ public class ContractorController {
         Contractor contractor = contractorService.getContractorById(contractorId);
         logger.info("Successfully Retrieved Contractor: {}", contractor);
         List<Contract> contractList = contractService.getAllContractsByContractorId(contractor);
-        logger.info("Successfully Retrieved Contracts List: {}", contractor);
+        logger.info("Successfully Retrieved Contracts List: {}", contractList);
         return new ResponseEntity<>(contractList, new HttpHeaders(), HttpStatus.OK);
     }
 }
