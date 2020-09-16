@@ -60,7 +60,7 @@ public class InvoiceController {
         return new ResponseEntity<>(invoice, new HttpHeaders(), HttpStatus.OK);
     }
 
-    @PutMapping(value="/invoice/{invoiceId}", produces = MediaType.APPLICATION_JSON_VALUE)
+    @PutMapping(value="/invoices/{invoiceId}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Invoice> setInvoiceIsVoid(@PathVariable("invoiceId") Long invoiceId,
                                                     @RequestBody Invoice updatedInvoice) throws RecordNotFoundException {
         Invoice invoice = invoiceService.setInvoiceIsVoid(invoiceId, updatedInvoice);
