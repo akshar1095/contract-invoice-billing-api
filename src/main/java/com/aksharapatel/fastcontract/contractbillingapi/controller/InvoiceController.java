@@ -28,6 +28,24 @@ public class InvoiceController {
 
     Logger logger = LoggerFactory.getLogger(ContractorController.class);
 
+    @PostMapping(value = "/contract/{contractId}/invoices", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Invoice> createInvoice(@PathVariable("contractId") Long contractId,
+                                                 @RequestBody Invoice newInvoice) throws RecordNotFoundException, ValueExceedsLimitException {
+        Contract contract = contractService.getContractById(contractId);
+        logger.info("Successfully Retrieved Contract: {}", contract);
+        Double remainingValue = contractService.getValueRemainingByContractId(contractId);
+        logger.info("Successfully Remaining Value: {}", remainingValue);
+
+        if(newInvoice.getInvoiceValue() > remainingValue) {
+            throw new ValueExceedsLimitException("Invoice Value: " + newInvoice.getInvoiceValue() + " Exceeds Value Remaining on Contract: " + remainingValue);
+        } else {
+            newInvoice.setContract(contract);
+            Invoice invoice = invoiceService.createInvoice(newInvoice);
+            logger.info("Successfully Created New Invoice: {}", invoice);
+            return new ResponseEntity<>(invoice, new HttpHeaders(), HttpStatus.OK);
+        }
+    }
+
     @GetMapping(value = "/invoices", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<List<Invoice>> getAllInvoices() {
         List<Invoice> invoiceList = invoiceService.getAllInvoices();
@@ -48,23 +66,5 @@ public class InvoiceController {
         Invoice invoice = invoiceService.setInvoiceIsVoid(invoiceId, updatedInvoice);
         logger.info("Successfully Updated Invoice Is Void: {}", invoice);
         return new ResponseEntity<>(invoice, new HttpHeaders(), HttpStatus.OK);
-    }
-
-    @PostMapping(value = "/contract/{contractId}/invoices", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Invoice> createInvoice(@PathVariable("contractId") Long contractId,
-                                                 @RequestBody Invoice newInvoice) throws RecordNotFoundException, ValueExceedsLimitException {
-        Contract contract = contractService.getContractById(contractId);
-        logger.info("Successfully Retrieved Contract: {}", contract);
-        Double remainingValue = contractService.getValueRemainingByContractId(contractId);
-        logger.info("Successfully Remaining Value: {}", remainingValue);
-
-        if(newInvoice.getInvoiceValue() > remainingValue) {
-            throw new ValueExceedsLimitException("Invoice Value: " + newInvoice.getInvoiceValue() + " Exceeds Value Remaining on Contract: " + remainingValue);
-        } else {
-            newInvoice.setContract(contract);
-            Invoice invoice = invoiceService.createInvoice(newInvoice);
-            logger.info("Successfully Created New Invoice: {}", invoice);
-            return new ResponseEntity<>(invoice, new HttpHeaders(), HttpStatus.OK);
-        }
     }
 }

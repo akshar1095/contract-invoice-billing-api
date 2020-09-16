@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class InvoiceService {
@@ -28,7 +29,7 @@ public class InvoiceService {
     public List<Invoice> getAllInvoices() { return invoiceRepository.findAll(); }
 
     public List<Invoice> getAllNonVoidInvoicesByContract(Contract contract) {
-        return invoiceRepository.findByContract(contract);
+        return invoiceRepository.findByContract(contract).stream().filter(invoice -> !invoice.getInvoiceVoid()).collect(Collectors.toList());
     }
 
     public Invoice getInvoiceById(Long invoiceId) throws RecordNotFoundException {

@@ -37,6 +37,21 @@ public class ContractController {
 
     Logger logger = LoggerFactory.getLogger(ContractorController.class);
 
+    @PostMapping(value = "/contractors/{contractorId}/{vendorId}/contracts", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Contract> createContract(@PathVariable("contractorId") Long contractorId,
+                                                   @PathVariable("vendorId") Long vendorId,
+                                                   @RequestBody Contract newContract) throws RecordNotFoundException {
+        Contractor contractor = contractorService.getContractorById(contractorId);
+        logger.info("Successfully Retrieved Contractor: {}", contractor);
+        Vendor vendor = vendorService.getVendorById(vendorId);
+        logger.info("Successfully Retrieved Vendor: {}", vendor);
+        newContract.setContractor(contractor);
+        newContract.setVendor(vendor);
+        Contract contract = contractService.createContract(newContract);
+        logger.info("Successfully Created New Contract: {}", contract);
+        return new ResponseEntity<>(contract, new HttpHeaders(), HttpStatus.OK);
+    }
+
     @GetMapping(value = "/contracts", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<List<Contract>> getAllContracts() {
         List<Contract> contractList = contractService.getAllContracts();
@@ -65,20 +80,5 @@ public class ContractController {
         Double remainingValue = contractService.getValueRemainingByContractId(contractId);
         logger.info("Successfully Remaining Value: {}", remainingValue);
         return new ResponseEntity<>(remainingValue, new HttpHeaders(), HttpStatus.OK);
-    }
-
-    @PostMapping(value = "/contractors/{contractorId}/{vendorId}/contracts", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Contract> createContract(@PathVariable("contractorId") Long contractorId,
-                                   @PathVariable("vendorId") Long vendorId,
-                                   @RequestBody Contract newContract) throws RecordNotFoundException {
-        Contractor contractor = contractorService.getContractorById(contractorId);
-        logger.info("Successfully Retrieved Contractor: {}", contractor);
-        Vendor vendor = vendorService.getVendorById(vendorId);
-        logger.info("Successfully Retrieved Vendor: {}", vendor);
-        newContract.setContractor(contractor);
-        newContract.setVendor(vendor);
-        Contract contract = contractService.createContract(newContract);
-        logger.info("Successfully Created New Contract: {}", contract);
-        return new ResponseEntity<>(contract, new HttpHeaders(), HttpStatus.OK);
     }
 }

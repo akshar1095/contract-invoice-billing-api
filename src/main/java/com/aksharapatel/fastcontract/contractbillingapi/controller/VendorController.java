@@ -54,7 +54,7 @@ public class VendorController {
         Vendor vendor = vendorService.getVendorById(vendorId);
         logger.info("Successfully Retrieved Vendor: {}", vendor);
         List<Contract> contractList = contractService.getAllContractsByVendorId(vendor);
-        logger.info("Successfully Retrieved Vendor List: {}", contractList);
+        logger.info("Successfully Retrieved Vendor Contract List: {}", contractList);
         return new ResponseEntity<>(contractList, new HttpHeaders(), HttpStatus.OK);
     }
 }
