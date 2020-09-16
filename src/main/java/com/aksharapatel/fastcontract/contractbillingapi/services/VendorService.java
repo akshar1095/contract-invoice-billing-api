@@ -23,7 +23,6 @@ public class VendorService {
 
     public Vendor getVendorById(Long vendorId) throws RecordNotFoundException {
         Optional<Vendor> vendor = vendorRepository.findById(vendorId);
-
-        return vendor.orElseThrow(() -> new RecordNotFoundException("No vendor record exists for the given vendor id"));
+        return vendor.orElseThrow(() -> new RecordNotFoundException("Vendor with given " + vendorId + " not found"));
     }
 }

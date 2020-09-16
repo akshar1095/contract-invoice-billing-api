@@ -29,8 +29,7 @@ public class ContractService {
 
     public Contract getContractById(Long contractId) throws RecordNotFoundException {
         Optional<Contract> contract = contractRepository.findById(contractId);
-
-        return contract.orElseThrow(() -> new RecordNotFoundException("No contract record exists for the given contract id"));
+        return contract.orElseThrow(() -> new RecordNotFoundException("Contract with given " + contractId + " not found"));
     }
 
     public Double getValueRemainingByContractId(Long contractId) throws RecordNotFoundException {
@@ -39,7 +38,7 @@ public class ContractService {
             return contract.get().getContractValue() - contract.get().getInvoices().stream().filter(invoice -> !invoice.getInvoiceVoid()).collect(Collectors.toList())
                     .stream().mapToDouble(Invoice::getInvoiceValue).sum();
         } else {
-            throw new RecordNotFoundException("No contract record exists for the given contract id");
+            throw new RecordNotFoundException("Contractor with given " + contractId + " not found");
         }
     }
 }

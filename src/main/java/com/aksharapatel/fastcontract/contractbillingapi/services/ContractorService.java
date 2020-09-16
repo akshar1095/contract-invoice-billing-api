@@ -25,7 +25,6 @@ public class ContractorService {
 
     public Contractor getContractorById(Long contractorId) throws RecordNotFoundException {
         Optional<Contractor> contractor = contractorRepository.findById(contractorId);
-
-        return contractor.orElseThrow(() -> new RecordNotFoundException("No contractor record exists for the given contractor id"));
+        return contractor.orElseThrow(() -> new RecordNotFoundException("Contractor with given " + contractorId + " not found"));
     }
 }
