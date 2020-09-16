@@ -1,7 +1,6 @@
 package com.aksharapatel.fastcontract.contractbillingapi.controller;
 
 import com.aksharapatel.fastcontract.contractbillingapi.exception.RecordNotFoundException;
-import com.aksharapatel.fastcontract.contractbillingapi.exception.ValueExceedsLimitException;
 import com.aksharapatel.fastcontract.contractbillingapi.models.Contract;
 import com.aksharapatel.fastcontract.contractbillingapi.models.Contractor;
 import com.aksharapatel.fastcontract.contractbillingapi.models.Invoice;
@@ -20,7 +19,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @RestController
 public class ContractController {
@@ -39,14 +37,14 @@ public class ContractController {
 
     Logger logger = LoggerFactory.getLogger(ContractorController.class);
 
-    @GetMapping(value = "/contracts")
+    @GetMapping(value = "/contracts", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<List<Contract>> getAllContracts() {
         List<Contract> contractList = contractService.getAllContracts();
         logger.info("Successfully Retrieved Contracts List: {}", contractList);
         return new ResponseEntity<>(contractList, new HttpHeaders(), HttpStatus.OK);
     }
 
-    @GetMapping("/contracts/{contractId}")
+    @GetMapping(value = "/contracts/{contractId}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Contract> getContractById(@PathVariable("contractId") Long contractId) throws RecordNotFoundException {
         Contract contract = contractService.getContractById(contractId);
         logger.info("Successfully Retrieved Contract: {}", contract);
@@ -62,7 +60,7 @@ public class ContractController {
         return new ResponseEntity<>(invoiceList, new HttpHeaders(), HttpStatus.OK);
     }
 
-    @GetMapping(value = "/contracts/{contractId}/remaining")
+    @GetMapping(value = "/contracts/{contractId}/remaining", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Double> getValueRemainingByContractId(@PathVariable("contractId") Long contractId) throws RecordNotFoundException {
         Double remainingValue = contractService.getValueRemainingByContractId(contractId);
         logger.info("Successfully Remaining Value: {}", remainingValue);
